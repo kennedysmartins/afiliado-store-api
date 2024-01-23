@@ -13,7 +13,7 @@ datasource db {
 model Products {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
   title            String
-  image            String?
+  image            String
   currentPrice     Float?
   originalPrice    Float?
   recurrencePrice  Float?
