@@ -1,45 +1,84 @@
 import { Request, Response } from 'express';
-import Product from '../models/product.model';
-import mongoose from 'mongoose';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+export const createProduct = async (req: Request, res: Response) => {
+    try {
+        console.log(req.body)
+      const newProduct = await prisma.products.create({
+        data: { ...req.body },
+      });
+  
+      res.status(201).json(newProduct);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
+  
+  export const editProduct = async (req: Request, res: Response) => {
+    try {
+      const productId = req.params.id;
+      const updatedProduct = await prisma.products.update({
+        where: { id: productId },
+        data: { ...req.body },
+      });
+  
+      res.status(200).json(updatedProduct);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
 
 export const getAllProducts = async (req: Request, res: Response) => {
     try {
-        const products = await Product.find();
-        res.status(200).json(products);
-        
+      const products = await prisma.products.findMany();
+      res.status(200).json(products);
     } catch (error) {
-        res.status(500).json(error);
+      res.status(500).json(error);
+    } finally {
+      await prisma.$disconnect();
     }
-}
-
-export const getProductsByName = async (req: Request, res: Response) => {    
+  };
+  
+  export const getProductsByName = async (req: Request, res: Response) => {
     try {
-        const products = await Product.find({'title': { $regex: new RegExp('.*' + req.params.name + '.*', "i") } });
-    
-        console.log(products)
-        res.status(200).json(products);
-        
+      const products = await prisma.products.findMany({
+        where: {
+          title: {
+            contains: req.params.name,
+            mode: 'insensitive', // case-insensitive search
+          },
+        },
+      });
+  
+      res.status(200).json(products);
     } catch (error) {
-        res.status(500).json(error);
+      res.status(500).json(error);
+    } finally {
+      await prisma.$disconnect();
     }
-}
-
-export const deleteProductById = async (req: Request, res: Response) => {    
+  };
+  
+  export const deleteProductById = async (req: Request, res: Response) => {
     try {
-        console.log(req.params.id)
-
-        const idToDelete = new mongoose.Types.ObjectId(req.params.id);
-
-        console.log(idToDelete)
-
-        const deleted = await Product.findOneAndDelete(idToDelete);
-
-        console.log(deleted)
-        res.status(200).json(deleted);
-        
+      const idToDelete = req.params.id;
+  
+      const deletedProduct = await prisma.products.delete({
+        where: { id: idToDelete },
+      });
+  
+      res.status(200).json(deletedProduct);
     } catch (error) {
-
-        console.error(error)
-        res.status(500).json(error);
+      console.error(error);
+      res.status(500).json(error);
+    } finally {
+      await prisma.$disconnect();
     }
-}
+  };
