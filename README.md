@@ -1,6 +1,6 @@
-# Afiliado Store - Projeto Next.js 🚀
+# Afiliado Store API - Projeto Next.js 🚀
 
-Bem-vindo ao repositório Afiliado Store, um projeto Next.js voltado para afiliados que desejam compartilhar links de produtos de diferentes plataformas como Amazon, Magazine Luiza e Mercado Livre e outras.
+Bem-vindo ao repositório Afiliado Store, um projeto Next.js voltado para afiliados que desejam compartilhar links de produtos de diferentes plataformas como Amazon, Magazine Luiza e Mercado Livre.
 
 ## Sobre o Projeto
 
@@ -10,12 +10,13 @@ O Afiliado Store é uma aplicação web que permite aos afiliados postarem links
 
 - **Frontend:**
   - [Next.js 14](https://nextjs.org/) 🌐
-  - [Styled Components](https://styled-components.com/) 💅
-  - [Material UI](https://mui.com/) 🎨
+  - [TailwindCSS](https://tailwindcss.com/) 💅
+  - [Shadcn UI](https://ui.shadcn.com/) 🎨
 
 - **Backend:**
   - [Prisma](https://www.prisma.io/) (integrado com MongoDB) 🛠️
   - API para CRUD de produtos e extração de dados de URL 📦
+  - [Swagger](https://swagger.io/) Documentação da API 📄
 
 ## Funcionalidades
 
