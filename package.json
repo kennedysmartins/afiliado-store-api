@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/app.js",
-    "build": "npm install && tsc",
+    "build": "npm install && npx prisma db push && tsc",
     "dev": "tsx watch ./src/app.ts"
   },
   "keywords": [],
