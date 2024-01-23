@@ -8,7 +8,7 @@ import cors from 'cors';
 require("dotenv").config();
 
 const app = express()
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 const corsOptions = {
     origin: '*',
@@ -22,15 +22,6 @@ const corsOptions = {
 app.use(bodyParser.json())
 app.use(cors(corsOptions))
 
-mongoose.connect(process.env.DB_URI as string, {
-    family: 4
-})
-mongoose.connection.on("connected", () => {
-    console.log("Conexão com o MongoDB estabelecida com sucesso!")
-})
-mongoose.connection.on("error", (err) => {
-    console.error("Erro na conexão com o MongoDB:", err)
-})
 app.use(express.static('uploads'));
 
 app.use('/products', productRoutes)
