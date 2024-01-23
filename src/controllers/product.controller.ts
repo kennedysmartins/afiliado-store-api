@@ -82,3 +82,20 @@ export const getAllProducts = async (req: Request, res: Response) => {
       await prisma.$disconnect();
     }
   };
+
+  export const getProductById = async (req: Request, res: Response) => {
+    try {
+      const idToGet = req.params.id;
+  
+      const byIdProduct = await prisma.products.findUnique({
+        where: { id: idToGet },
+      });
+  
+      res.status(200).json(byIdProduct);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
