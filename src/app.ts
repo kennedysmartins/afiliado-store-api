@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import productRoutes from '../src/routes/product.routes'
+import mainRoutes from '../src/routes/main.routes'
 import userRoutes from '../src/routes/user.routes'
 import authRoutes from '../src/routes/auth.routes'
 import cors from 'cors';
@@ -25,6 +26,8 @@ app.use(cors(corsOptions))
 
 app.use(express.static('uploads'));
 
+app.use("/", mainRoutes);
+  
 app.use('/products', productRoutes)
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
