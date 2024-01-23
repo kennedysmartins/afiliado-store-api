@@ -26,23 +26,31 @@ model Products {
   cupom            String?
   cupomValue       Float?
   totalClicks      Int?     @default(0)
+  totalViews       Int?     @default(0)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   published        Boolean  @default(false)
 }
 
 model Users {
-  id        String    @id @map("_id") @db.ObjectId
-  username  String?
-  password  String?
-  email     String    @unique
-  stauts    String?
-  imagePath String?
-  userType  UserType? @default(CLIENT)
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  name         String?
+  username     String?
+  passwordHash String?
+  email        String    @unique
+  status       status?   @default(NEW)
+  imagePath    String?
+  userType     UserType? @default(CLIENT)
 }
 
 enum UserType {
   ADMIN
   MODERATOR
   CLIENT
+}
+
+enum status {
+  NEW
+  VERIFIED
+  BLOCKED
 }
