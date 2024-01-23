@@ -1,10 +1,10 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
-import productRoutes from '../src/routes/product.routes'
-import mainRoutes from '../src/routes/main.routes'
-import userRoutes from '../src/routes/user.routes'
-import authRoutes from '../src/routes/auth.routes'
+import productRoutes from './routes/product.routes'
+import mainRoutes from './routes/main.routes'
+import userRoutes from './routes/user.routes'
+import authRoutes from './routes/auth.routes'
 import cors from 'cors';
 import swaggerUi from "swagger-ui-express"
 require("dotenv").config();
