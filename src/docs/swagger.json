@@ -1,0 +1,392 @@
+{
+  "openapi":"3.0.0",
+  "info":{
+    "title":"Afiliado Store API",
+    "description":"Essa API tem como objetivo a manipulação dos produtos, usuários e categorias da Afiliado Store",
+    "contact":{
+      "email":"kennedy@tecker.com.br"
+    },
+    "version":"1.0.0"
+  },
+  "servers": [
+    {
+      "url":"http://localhost:4000/v1",
+      "description":"API de teste"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "post": {
+        "summary": "Cadastro de produto",
+        "description": "Essa rota será responsável por cadastrar um novo produto",
+        "tags": ["Products"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "title": "Produto de Teste",
+                  "image": "imagem.jpg",
+                  "currentPrice": 19.99,
+                  "originalPrice": 29.99,
+                  "recurrencePrice": 9.99,
+                  "buyLink": "http://exemplo.com/comprar",
+                  "announcement": "Novo produto disponível",
+                  "productCode": "ABC123",
+                  "catchyText": "Aproveite a promoção!",
+                  "conditionalPayment": "Em até 3x sem juros",
+                  "website": "http://exemplo.com",
+                  "cupom": "DESC10",
+                  "cupomValue": 10.0,
+                  "totalClicks": 100,
+                  "totalViews": 500,
+                  "createdAt": "2024-01-22T12:00:00Z",
+                  "updatedAt": "2024-01-22T13:30:00Z",
+                  "published": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os produtos",
+        "description": "Essa rota retorna a lista de todos os produtos",
+        "tags": ["Products"],
+        "responses": {
+          "200": {
+            "description": "Lista de produtos",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Produto 1",
+                    "image": "imagem1.jpg",
+                    "currentPrice": 19.99,
+                    "originalPrice": 29.99,
+                    "recurrencePrice": 9.99,
+                    "buyLink": "http://exemplo.com/comprar1",
+                    "announcement": "Novo produto disponível",
+                    "productCode": "ABC123",
+                    "catchyText": "Aproveite a promoção!",
+                    "conditionalPayment": "Em até 3x sem juros",
+                    "website": "http://exemplo.com",
+                    "cupom": "DESC10",
+                    "cupomValue": 10.0,
+                    "totalClicks": 100,
+                    "totalViews": 500,
+                    "createdAt": "2024-01-22T12:00:00Z",
+                    "updatedAt": "2024-01-22T13:30:00Z",
+                    "published": true
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "put": {
+        "summary": "Atualiza um produto",
+        "description": "Essa rota atualiza um produto existente",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do produto a ser atualizado",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "title": "Produto Atualizado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um produto",
+        "description": "Essa rota exclui um produto existente",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do produto a ser excluído",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto excluído com sucesso"
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/products/search/{name}": {
+      "get": {
+        "summary": "Busca produtos por nome",
+        "description": "Essa rota retorna uma lista de produtos que contêm o nome especificado",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Nome a ser pesquisado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de produtos que contêm o nome especificado",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Produto 1"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Lista todos os usuários",
+        "description": "Essa rota retorna a lista de todos os usuários",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Usuário 1"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "summary": "Exclui um usuário",
+        "description": "Essa rota exclui um usuário existente",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário a ser excluído",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário excluído com sucesso"
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um usuário",
+        "description": "Essa rota atualiza um usuário existente",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário a ser atualizado",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Usuário Atualizado"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product":{
+        "type": "object",
+        "properties":{
+          "title":{
+            "type":"string"
+          },
+          "image":{
+            "type":"string"
+          },
+          "currentPrice":{
+            "type":"float"
+          },
+          "originalPrice":{
+            "type":"float"
+          },
+          "recurrencePrice":{
+            "type":"float"
+          },
+          "buyLink":{
+            "type":"string"
+          },
+          "announcement":{
+            "type":"string"
+          },
+          "productCode":{
+            "type":"string"
+          },
+          "catchyText":{
+            "type":"string"
+          },
+          "conditionalPayment":{
+            "type":"string"
+          },
+          "website":{
+            "type":"string"
+          },
+          "cupom":{
+            "type":"string"
+          },
+          "cupomValue":{
+            "type":"float"
+          },
+          "totalClicks":{
+            "type":"integer"
+          },
+          "totalViews":{
+            "type":"integer"
+          },
+          "createdAt":{
+            "type":"string"
+          },
+          "updatedAt":{
+            "type":"string"
+          },
+          "published":{
+            "type":"string"
+          }
+
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "imagePath": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "userType": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+
+

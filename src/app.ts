@@ -5,6 +5,7 @@ import productRoutes from '../src/routes/product.routes'
 import userRoutes from '../src/routes/user.routes'
 import authRoutes from '../src/routes/auth.routes'
 import cors from 'cors';
+import swaggerUi from "swagger-ui-express"
 require("dotenv").config();
 
 const app = express()
@@ -27,6 +28,7 @@ app.use(express.static('uploads'));
 app.use('/products', productRoutes)
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(require("./docs/swagger.json")));
 
 app.listen(PORT, () => {
     console.log('Servidor rodando em http://localhost:'+PORT)
