@@ -1,13 +1,23 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { customAlphabet, nanoid } from "nanoid";
+
+
+//nanoid
+const customAlphabetString =
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const generateCustomId = customAlphabet(customAlphabetString, 5);
+
 
 const prisma = new PrismaClient();
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
+      let customId = generateCustomId()
         console.log(req.body)
       const newProduct = await prisma.products.create({
-        data: { ...req.body },
+        data: { ...req.body,
+        id: customId },
       });
   
       res.status(201).json(newProduct);
