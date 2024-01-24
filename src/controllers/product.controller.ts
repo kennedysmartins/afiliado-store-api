@@ -33,7 +33,7 @@ export const createProduct = async (req: Request, res: Response) => {
     try {
       const productId = req.params.id;
       const updatedProduct = await prisma.products.update({
-        where: { id: productId },
+        where: { customId: productId },
         data: { ...req.body },
       });
   
@@ -85,23 +85,6 @@ export const getAllProducts = async (req: Request, res: Response) => {
       const idToDelete = req.params.id;
   
       const deletedProduct = await prisma.products.delete({
-        where: { id: idToDelete },
-      });
-  
-      res.status(200).json(deletedProduct);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json(error);
-    } finally {
-      await prisma.$disconnect();
-    }
-  };
-
-  export const deleteProductByCustomId = async (req: Request, res: Response) => {
-    try {
-      const idToDelete = req.params.id;
-  
-      const deletedProduct = await prisma.products.delete({
         where: { customId: idToDelete },
       });
   
@@ -119,27 +102,10 @@ export const getAllProducts = async (req: Request, res: Response) => {
       const idToGet = req.params.id;
   
       const byIdProduct = await prisma.products.findUnique({
-        where: { id: idToGet },
-      });
-  
-      res.status(200).json(byIdProduct);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json(error);
-    } finally {
-      await prisma.$disconnect();
-    }
-  };
-
-  export const getProductByCustomId = async (req: Request, res: Response) => {
-    try {
-      const idToGet = req.params.id;
-  
-      const byCustomIdProduct = await prisma.products.findUnique({
         where: { customId: idToGet },
       });
   
-      res.status(200).json(byCustomIdProduct);
+      res.status(200).json(byIdProduct);
     } catch (error) {
       console.error(error);
       res.status(500).json(error);
