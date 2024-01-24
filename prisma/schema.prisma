@@ -41,6 +41,7 @@ model Users {
   status       status?   @default(NEW)
   imagePath    String?
   userType     UserType? @default(CLIENT)
+  token        String?
 }
 
 enum UserType {
