@@ -5,6 +5,9 @@ import productRoutes from './routes/product.routes'
 import mainRoutes from './routes/main.routes'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+import statusRoutes from "./routes/status.routes"
+import extractorRoutes from "./routes/extractor.routes"
+
 import cors from 'cors';
 import swaggerUi from "swagger-ui-express"
 require("dotenv").config();
@@ -31,6 +34,8 @@ app.use("/", mainRoutes);
 app.use('/products', productRoutes)
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
+app.use("/extractor", extractorRoutes)
+app.use("/status", statusRoutes)
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(require("./docs/swagger.json")));
 
 app.listen(PORT, () => {
