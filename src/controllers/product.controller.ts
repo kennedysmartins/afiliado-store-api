@@ -1,20 +1,34 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { customAlphabet, nanoid } from "nanoid";
+import { generateCustomId } from '../lib/utils';
 
-
-//nanoid
-const customAlphabetString =
-  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-const generateCustomId = customAlphabet(customAlphabetString, 5);
 
 
 const prisma = new PrismaClient();
 
+async function isIdUnique(id: string) {
+  try {
+    const existingProduct = await prisma.products.findUnique({
+      where: {
+        customId: id,
+      },
+    });
+    // Se existingProduct for null, o ID é único; caso contrário, não é único
+    return !existingProduct;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export const createProduct = async (req: Request, res: Response) => {
     try {
-      let customId = generateCustomId()
-        console.log(req.body)
+      let customId;
+      do {
+        customId = generateCustomId();
+      } while (!(await isIdUnique(customId)));
       const newProduct = await prisma.products.create({
         data: { ...req.body,
         customId: customId },

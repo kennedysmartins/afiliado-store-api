@@ -1,5 +1,7 @@
 import ogs from "open-graph-scraper"
 import { OGSResult } from "./types"
+const customAlphabetString =
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 
 export const formatPrice = (currentPrice: string) => {
@@ -43,3 +45,13 @@ export const extractOG = async (
 
   return ogsResult
 }
+
+export const generateCustomId = () => {
+  let id = "";
+  for (let i = 0; i < 5; i++) {
+    id += customAlphabetString.charAt(
+      Math.floor(Math.random() * customAlphabetString.length)
+    );
+  }
+  return id;
+};
