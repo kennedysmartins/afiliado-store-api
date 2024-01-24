@@ -17,7 +17,7 @@ export const createProduct = async (req: Request, res: Response) => {
         console.log(req.body)
       const newProduct = await prisma.products.create({
         data: { ...req.body,
-        id: customId },
+        customId: customId },
       });
   
       res.status(201).json(newProduct);

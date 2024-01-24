@@ -12,6 +12,7 @@ datasource db {
 
 model Products {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  customId         String   @unique @default(nanoid())
   title            String
   image            String
   currentPrice     Float?
