@@ -37,15 +37,19 @@ export const createProduct = async (req: Request, res: Response) => {
   };
 
 export const getAllProducts = async (req: Request, res: Response) => {
-    try {
-      const products = await prisma.products.findMany();
-      res.status(200).json(products);
-    } catch (error) {
-      res.status(500).json(error);
-    } finally {
-      await prisma.$disconnect();
-    }
-  };
+  try {
+    const products = await prisma.products.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
   
   export const getProductsByName = async (req: Request, res: Response) => {
     try {
