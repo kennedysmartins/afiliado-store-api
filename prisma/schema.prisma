@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Products {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @default(cuid()) @map("_id") @db.ObjectId
   customId         String   @unique @default(cuid())
   title            String
   image            String
@@ -43,6 +43,16 @@ model Users {
   imagePath    String?
   userType     UserType? @default(CLIENT)
   token        String?
+}
+
+model Config {
+  id               String  @id @default(cuid()) @map("_id") @db.ObjectId
+  storeName        String?
+  storeDescription String?
+  storeLogo        String?
+  storeAddress     String?
+  storeContact     Json?
+  storeConfig      Json?
 }
 
 enum UserType {

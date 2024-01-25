@@ -1,11 +1,11 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import mongoose from 'mongoose'
 import productRoutes from './routes/product.routes'
 import mainRoutes from './routes/main.routes'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import statusRoutes from "./routes/status.routes"
+import storeRoutes from "./routes/store.routes"
 import extractorRoutes from "./routes/extractor.routes"
 
 import cors from 'cors';
@@ -35,6 +35,7 @@ app.use('/products', productRoutes)
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use("/extractor", extractorRoutes)
+app.use("/store", storeRoutes)
 app.use("/status", statusRoutes)
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(require("./docs/swagger.json")));
 
