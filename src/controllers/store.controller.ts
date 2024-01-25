@@ -67,7 +67,7 @@ export const createDefaultConfig = async (req: Request, res: Response) => {
         storeName: 'Afiliado Store', 
         storeDescription: "Sua loja para produtos de afiliados",
         storeLogo: '/logo.png', 
-        storeContact: JSON.parse('{address": "Rua Exemplo, 00 - Natal - Rio Grande do Norte", "phone": "+55 84 99999-9999", "email": "example@example.com", "socialWhatApp":"https://", "socialTelegram":"https://", "socialFacebook":"https://", "socialTwitter":"https://", "socialInstagram":"https://", "social"}'), 
+        storeContact: JSON.parse('{"address": "Rua Exemplo, 00 - Natal - Rio Grande do Norte", "phone": "+55 84 99999-9999", "email": "example@example.com", "socialWhatApp":"https://", "socialTelegram":"https://", "socialFacebook":"https://", "socialTwitter":"https://", "socialInstagram":"https://"}'), 
         storeConfig: JSON.parse('{"navbar": "logo-and-name"}'), 
       },
     });
