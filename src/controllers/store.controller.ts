@@ -50,6 +50,8 @@ export const editConfig = async (req: Request, res: Response) => {
 
 export const createDefaultConfig = async (req: Request, res: Response) => {
   try {
+    // Apaga todas as configurações existentes
+    await prisma.config.deleteMany();
     // Verifica se já existe uma configuração padrão
     const existingDefaultConfig = await prisma.config.findFirst({
       where: { storeName: null }, // Adapte conforme seus critérios para identificar uma configuração padrão
