@@ -15,6 +15,8 @@ export const getAllConfigs = async (req: Request, res: Response) => {
 };
 
 export const editConfig = async (req: Request, res: Response) => {
+  console.log("Editando configurações da loja")
+
   const { id } = req.params; // Assume que você recebe o ID da configuração como parâmetro na URL
   const { storeName, storeLogo, storeAddress, storeContact, storeConfig } = req.body;
 
@@ -49,6 +51,7 @@ export const editConfig = async (req: Request, res: Response) => {
 };
 
 export const createDefaultConfig = async (req: Request, res: Response) => {
+  console.log("Criando configurações padrões da loja")
   try {
     // Apaga todas as configurações existentes
     await prisma.config.deleteMany();
