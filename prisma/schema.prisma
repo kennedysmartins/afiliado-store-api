@@ -50,7 +50,6 @@ model Config {
   storeName        String?
   storeDescription String?
   storeLogo        String?
-  storeAddress     String?
   storeContact     Json?
   storeConfig      Json?
 }

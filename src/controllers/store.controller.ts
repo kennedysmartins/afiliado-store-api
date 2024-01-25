@@ -48,3 +48,33 @@ export const editConfig = async (req: Request, res: Response) => {
     await prisma.$disconnect();
   }
 };
+
+export const createDefaultConfig = async (req: Request, res: Response) => {
+  try {
+    // Verifica se já existe uma configuração padrão
+    const existingDefaultConfig = await prisma.config.findFirst({
+      where: { storeName: null }, // Adapte conforme seus critérios para identificar uma configuração padrão
+    });
+
+    if (existingDefaultConfig) {
+      return res.status(400).json({ error: 'Configuração padrão já existe.' });
+    }
+
+    // Cria a configuração padrão
+    const defaultConfig = await prisma.config.create({
+      data: {
+        storeName: 'Afiliado Store', 
+        storeLogo: '/logo.png', 
+        storeContact: JSON.parse('{address": "Rua Exemplo, 00 - Natal - Rio Grande do Norte", "phone": "+55 84 99999-9999", "email": "example@example.com", "socialWhatApp":"https://", "socialTelegram":"https://", "socialFacebook":"https://", "socialTwitter":"https://", "socialInstagram":"https://", "social"}'), 
+        storeConfig: JSON.parse('{"navbar": "logo-and-name"}'), 
+      },
+    });
+
+    res.status(201).json(defaultConfig);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao criar configuração padrão.' });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
