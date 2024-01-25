@@ -34,7 +34,6 @@ export const editConfig = async (req: Request, res: Response) => {
       data: {
         storeName,
         storeLogo,
-        storeAddress,
         storeContact,
         storeConfig,
       },
