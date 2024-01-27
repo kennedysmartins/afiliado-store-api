@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import fileUpload from '../middlewares/fileUploadMiddleware';
 require('dotenv').config();
-import { User } from '../lib/types';
 
 const prisma = new PrismaClient();
 const saltRounds = 10;
@@ -125,7 +124,7 @@ export const authUser = async (req: Request, res: Response) => {
     try {
         fileUpload.single('image')(req, res, async (err: any) => {
       const userId = req.params.id;
-      const { password, ...userDataWithoutPassword } = req.body;
+      const { password, imagePath, ...userDataWithout } = req.body;
   
       let updatedUserData: any;
   
@@ -134,7 +133,7 @@ export const authUser = async (req: Request, res: Response) => {
         updatedUserData = await prisma.users.update({
           where: { id: userId },
           data: {
-            ...userDataWithoutPassword,
+            ...userDataWithout,
             passwordHash: hashedPassword,
           },
           select: {
@@ -153,7 +152,7 @@ export const authUser = async (req: Request, res: Response) => {
         updatedUserData = await prisma.users.update({
           where: { id: userId },
           data: {
-            ...userDataWithoutPassword,
+            ...userDataWithout,
           },
           select: {
             id: true,
