@@ -35,13 +35,13 @@ model Products {
 
 model Users {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  name         String?
+  name         String
   username     String?
   passwordHash String?
   email        String    @unique
   status       status?   @default(NEW)
   imagePath    String?
-  userType     UserType? @default(CLIENT)
+  userType     UserType @default(CLIENT)
   token        String?
 }
 
@@ -55,6 +55,7 @@ model Config {
 }
 
 enum UserType {
+  SUPER
   ADMIN
   MODERATOR
   CLIENT

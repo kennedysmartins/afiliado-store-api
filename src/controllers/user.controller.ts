@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import fileUpload from '../middlewares/fileUploadMiddleware';
 require('dotenv').config();
+import { User } from '../lib/types';
 
 const prisma = new PrismaClient();
 const saltRounds = 10;
@@ -17,24 +18,33 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
-      fileUpload.single('image')(req, res, async (err: any) => {
-        // ... (seu código de upload)
-  
+      const users = await prisma.users.findMany();
+      if (users.length > 0) {
         const { password, ...userDataWithoutPassword } = req.body; // Remove a senha dos dados do usuário
-  
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const image = req.file ? req.file.filename : '';
   
         const newUser = await prisma.users.create({
           data: {
             ...userDataWithoutPassword, // Use os dados do usuário sem a senha
             passwordHash: hashedPassword,
-            imagePath: image,
           },
         });
-  
         res.status(200).json(newUser);
-      });
+      } else {
+        //create first user
+        const { password, ...userDataWithoutPassword } = req.body; // Remove a senha dos dados do usuário
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const newUser = await prisma.users.create({
+          data: {
+            ...userDataWithoutPassword, // Use os dados do usuário sem a senha
+            passwordHash: hashedPassword,
+            userType: "SUPER",
+            status:"VERIFIED"
+          },
+        });
+        res.status(200).json(newUser);
+      }
     } catch (error) {
       res.status(500).json(error);
     } finally {

@@ -17,3 +17,11 @@ export interface OGSResult {
   ogDescription: string;
   // Adicione outras propriedades conforme necessário.
 }
+
+export interface User {
+  id: number
+  name: string
+  email: string
+  passwordHash: string
+  userType: "SUPER" | "ADMIN" | "MODERATOR"| "CLIENT"
+}
