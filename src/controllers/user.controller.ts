@@ -121,6 +121,7 @@ export const authUser = async (req: Request, res: Response) => {
   };
 
   export const editUser = async (req: Request, res: Response) => {
+    console.log("Editando user")
     try {
         fileUpload.single('image')(req, res, async (err: any) => {
       const userId = req.params.id;
