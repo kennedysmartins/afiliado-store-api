@@ -125,7 +125,7 @@ export const authUser = async (req: Request, res: Response) => {
     try {
         fileUpload.single('imagePath')(req, res, async (err: any) => {
       const userId = req.params.id;
-      const { password, imagePath, ...userDataWithout } = req.body;
+      const { password, ...userDataWithout } = req.body;
   
       let updatedUserData: any;
   
