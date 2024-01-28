@@ -1,10 +1,10 @@
 // controllers/user.controller.ts
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { Request, Response } from 'express';
-import fileUpload from '../middlewares/fileUploadMiddleware';
-require('dotenv').config();
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
+import fileUpload from "../middlewares/fileUploadMiddleware";
+require("dotenv").config();
 
 const prisma = new PrismaClient();
 const saltRounds = 10;
@@ -23,7 +23,6 @@ export const getUserById = async (req: Request, res: Response) => {
   res.json(user);
 };
 
-
 export const createUser = async (req: Request, res: Response) => {
   console.log("Criando User");
   try {
@@ -40,24 +39,22 @@ export const createUser = async (req: Request, res: Response) => {
       });
       res.status(200).json(newUser);
     } else {
-
       //create first user
       const { password, ...userDataWithoutPassword } = req.body; // Remove a senha dos dados do usuário
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-
 
       const newUser = await prisma.users.create({
         data: {
           ...userDataWithoutPassword, // Use os dados do usuário sem a senha
           passwordHash: hashedPassword,
-          userType: 'SUPER',
-          status: 'VERIFIED',
+          userType: "SUPER",
+          status: "VERIFIED",
           username: userDataWithoutPassword.name.split(" ")[0].toLowerCase(),
         },
       });
       res.status(200).json(newUser);
     }
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json(error.message);
   } finally {
     // desconectar o PrismaClient
@@ -83,52 +80,52 @@ export const deleteUser = async (req: Request, res: Response) => {
 };
 
 export const authUser = async (req: Request, res: Response) => {
-    try {
-      const { email, password } = req.body;
-  
-      const user = await prisma.users.findUnique({
-        where: { email: email as string },
-      });
-  
-      if (!user) {
-        res.status(500).json({ error: "Usuário não encontrado" });
+  try {
+    const { email, password } = req.body;
+
+    const user = await prisma.users.findUnique({
+      where: { email: email as string },
+    });
+
+    if (!user) {
+      res.status(500).json({ error: "Usuário não encontrado" });
+      return;
+    }
+
+    if (user.passwordHash) {
+      const isPassValid = await bcrypt.compare(password, user.passwordHash);
+
+      if (!isPassValid) {
+        res.status(500).json({ error: "Senha não encontrada" });
         return;
       }
-  
-      if (user.passwordHash) {
-        const isPassValid = await bcrypt.compare(password, user.passwordHash);
-  
-        if (!isPassValid) {
-          res.status(500).json({ error: "Senha não encontrada" });
-          return;
-        }
-  
-        const token = jwt.sign({ id: user.id }, jsonSecret as string, {
-          expiresIn: "30m",
-        });
-  
-        res.json({ token: token, user: user });
-      } else {
-        res.status(500).json({ error: "Senha não encontrada" });
-      }
-    } catch (error) {
-      console.error("Erro durante a autenticação do usuário:", error);
-      res.status(500).json({ error: "Erro durante a autenticação do usuário" });
-    } finally {
-      // desconectar o PrismaClient
-        await prisma.$disconnect();
-      }
-  };
 
-  export const editUser = async (req: Request, res: Response) => {
-    console.log("Editando user")
-    try {
-        fileUpload.single('imagePath')(req, res, async (err: any) => {
+      const token = jwt.sign({ id: user.id }, jsonSecret as string, {
+        expiresIn: "30m",
+      });
+
+      res.json({ token: token, user: user });
+    } else {
+      res.status(500).json({ error: "Senha não encontrada" });
+    }
+  } catch (error) {
+    console.error("Erro durante a autenticação do usuário:", error);
+    res.status(500).json({ error: "Erro durante a autenticação do usuário" });
+  } finally {
+    // desconectar o PrismaClient
+    await prisma.$disconnect();
+  }
+};
+
+export const editUser = async (req: Request, res: Response) => {
+  console.log("Editando user");
+  try {
+    fileUpload.single("imagePath")(req, res, async (err: any) => {
       const userId = req.params.id;
       const { password, ...userDataWithout } = req.body;
-  
+
       let updatedUserData: any;
-  
+
       if (password) {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         updatedUserData = await prisma.users.update({
@@ -167,16 +164,16 @@ export const authUser = async (req: Request, res: Response) => {
           },
         });
       }
-  
+
       res.status(200).json({
         message: `Usuário atualizado com sucesso`,
         user: updatedUserData,
       });
     });
-    } catch (error) {
-      res.status(500).json(error);
-    } finally {
-      // desconectar o PrismaClient
-      await prisma.$disconnect();
-    }
-  };
+  } catch (error) {
+    res.status(500).json(error);
+  } finally {
+    // desconectar o PrismaClient
+    await prisma.$disconnect();
+  }
+};
